@@ -5,7 +5,7 @@ import java.util.*;
 
 public class Package {
 	private String name;
-	private List<Classe> classes;
+	private List<Classe> classes=new ArrayList<Classe>();
 
 
 	public String getName() {
@@ -20,7 +20,7 @@ public class Package {
 	public void setClasses(List<Classe> classes) {
 		this.classes = classes;
 	}
-	public static Package exploreFile(File f) throws ClassNotFoundException {
+	public static Package explorePackages(File f) throws ClassNotFoundException {
 		Package p=new Package();
 		p.name=f.getName();
 		File ff[] = f.listFiles();
@@ -29,7 +29,7 @@ public class Package {
 			if (fg.isFile() && fg.getName().endsWith(".java")) {
 				
 			Classe c=Classe.exploreClasses(fg);
-			p.classes.add(c);
+			p.getClasses().add(c);
 			}}
 		return p;
 	}

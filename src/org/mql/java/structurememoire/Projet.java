@@ -20,17 +20,17 @@ public class Projet {
 	public void setPackages(List<Package> packages) {
 		this.packages = packages;
 	} 
-public void addrecursive(File f) throws ClassNotFoundException {
+public void explorerecursivepackgesinprojet(File f) throws ClassNotFoundException {
 	if (f.isFile() || packages==null || f==null ) {
 	}
 	else{
-		Package p= Package.exploreFile(f);
+		Package p= Package.explorePackages(f);//cette methode statique va explorer le fichier et va en quelque sorte le transformer en package equivalent
 	
 		packages.add(p);
 		File fr[]=f.listFiles();
 		for(File ff:fr){
 		
-			addrecursive(ff);
+			explorerecursivepackgesinprojet(ff);
 		}
 	}
 }

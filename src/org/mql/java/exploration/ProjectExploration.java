@@ -3,19 +3,24 @@ package org.mql.java.exploration;
 import java.io.File;
 import java.util.Vector;
 
-
+import org.mql.java.structurememoire.Classe;
+import org.mql.java.structurememoire.Package;
 import org.mql.java.structurememoire.Projet;
 
 public class ProjectExploration {
 
-public ProjectExploration() {
+public ProjectExploration() throws ClassNotFoundException {
 	
-	
-int i =getPackageList("C:\\Users\\houss\\eclipse-workspace\\p04-xml-parsers").getPackages().size();
-System.out.println(i);
+	Projet p= ProjectExploration.getPackageList("C:\\Users\\houss\\eclipse-workspace\\p04-xml-parsers");
+	for (Package pp:p.getPackages()) {
+		for(Classe cc:pp.getClasses()) {
+			System.out.print(cc.getName());
+		}
+	}
+
 }
 	
-	public Projet getPackageList(String projectpath) {
+	public static Projet getPackageList(String projectpath) throws ClassNotFoundException {
 		File srcDir = new File(projectpath, "\\src");
 	
 		Projet p=new Projet();
@@ -24,13 +29,13 @@ System.out.println(i);
 		    return null; // ou lancer une exception
 		}
 		
-		p.addrecursive(srcDir);
+		p.explorerecursivepackgesinprojet(srcDir);
 			
 		
 	
 		return p;
 	}
-	public static void main(String[] args) {
+	public static void main(String[] args) throws ClassNotFoundException {
 		new ProjectExploration();
 		
 	}
