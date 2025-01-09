@@ -23,7 +23,7 @@ import org.mql.java.structurememoire.Projet;
 public class applcationUml extends JFrame{
 public applcationUml (String projectpath) throws ClassNotFoundException {
 	super("app uml");
-	this.setSize(1200, 800);
+/*	this.setSize(1200, 800);
 	
 	 JPanel container = new JPanel();
 	 container.setLayout(new FlowLayout());
@@ -31,17 +31,17 @@ public applcationUml (String projectpath) throws ClassNotFoundException {
 	
 	 JTextField jf=new JTextField();
 	jf.setPreferredSize(new Dimension(400,20));
-	 JTextField jf1=new JTextField();
+	/* JTextField jf1=new JTextField();
 	jf1.setPreferredSize(new Dimension(1100,700));
 	 JButton b=new JButton("generer UML");
 
 	 container.add(jl);
 	 container.add(jf);
-	 container.add(b);
-	 container.add(jf1);
-	container.add(new dessin(projectpath),BorderLayout.CENTER);
-	setContentPane( container);
-
+	 container.add(b);*/
+	// container.add(jf1);
+	add(new dessin(projectpath),BorderLayout.CENTER);
+	//setContentPane( container);
+	 setSize(800, 600);
 	setDefaultCloseOperation(EXIT_ON_CLOSE);
 
 	setLocationRelativeTo(null);
@@ -49,7 +49,7 @@ public applcationUml (String projectpath) throws ClassNotFoundException {
 }
 
 public static void main(String[] args) throws ClassNotFoundException {
-	new applcationUml ("C:\\Users\\houss\\eclipse-workspace\\p04-xml-parsers");
+	new applcationUml ("C:\\Users\\houss\\eclipse-workspace\\p02_generics");
 }
 
 }

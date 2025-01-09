@@ -1,6 +1,7 @@
 package org.mql.java.structurememoire;
 
 import java.io.File;
+import java.net.MalformedURLException;
 import java.util.*;
 
 public class Package {
@@ -20,16 +21,18 @@ public class Package {
 	public void setClasses(List<Classe> classes) {
 		this.classes = classes;
 	}
-	public static Package explorePackages(File f) throws ClassNotFoundException {
+	public  Package explorePackages(File f) throws ClassNotFoundException, MalformedURLException {
 		Package p=new Package();
 		p.name=f.getName();
 		File ff[] = f.listFiles();
 		
 		for (File fg:ff) {
-			if (fg.isFile() && fg.getName().endsWith(".java")) {
+			if (fg.isFile() && fg.getName().endsWith(".class")) {
 				
-			Classe c=Classe.exploreClasses(fg);
-			p.getClasses().add(c);
+
+			Classe c=new Classe();
+			Classe c1=		c.exploreClasses(fg,p.name);
+			p.classes.add(c1);
 			}}
 		return p;
 	}

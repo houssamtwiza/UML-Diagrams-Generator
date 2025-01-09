@@ -1,6 +1,7 @@
 package org.mql.java.structurememoire;
 
 import java.io.File;
+import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.List;
 // classe Java qui sert de structure de données en mémoire pour organiser les informations extraites
@@ -20,13 +21,14 @@ public class Projet {
 	public void setPackages(List<Package> packages) {
 		this.packages = packages;
 	} 
-public void explorerecursivepackgesinprojet(File f) throws ClassNotFoundException {
+public void explorerecursivepackgesinprojet(File f) throws ClassNotFoundException, MalformedURLException {
 	if (f.isFile() || packages==null || f==null ) {
 	}
 	else{
-		Package p= Package.explorePackages(f);//cette methode statique va explorer le fichier et va en quelque sorte le transformer en package equivalent
+		Package p= new Package();
+		Package p1=	p.explorePackages(f);//cette methode statique va explorer le fichier et va en quelque sorte le transformer en package equivalent
 	
-		packages.add(p);
+		packages.add(p1);
 		File fr[]=f.listFiles();
 		for(File ff:fr){
 		
