@@ -18,16 +18,16 @@ public ProjectExploration() throws ClassNotFoundException, MalformedURLException
 	Projet p= ProjectExploration.getPackageList("C:\\Users\\houss\\eclipse-workspace\\p02_generics");
   List<Package> pp= p.getPackages();
 	System.out.println(pp.get(1).getClasses().get(4).getRelationsAggregation().size());
-	/*for (Package pp:p.getPackages()) {
+	for (Package ppp:p.getPackages()) {
 	
-		for(Classe cc:pp.getClasses()) {
-			for(Field f :cc.getRelationsAggregation()) {
-				System.out.println(f.getName());
-			}
-		}
-	}*/
+		for(Classe cc:ppp.getClasses()) {
+			
+				
+				System.out.println(cc.getName() );
+			
+		}}
+	}
 
-}
 	
 	public static Projet getPackageList(String projectpath) throws ClassNotFoundException, MalformedURLException {
 		File srcDir = new File(projectpath, "\\bin");

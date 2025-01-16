@@ -3,53 +3,80 @@ package org.mql.java.ui;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.util.List;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
 
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import org.mql.java.exploration.ProjectExploration;
-import org.mql.java.structurememoire.Classe;
-import org.mql.java.structurememoire.Package;
-import org.mql.java.structurememoire.Projet;
+public class applcationUml extends JFrame {
 
+    public applcationUml() throws ClassNotFoundException {
+        super("app uml");
+        this.setSize(1200, 800);
 
+        JPanel container = new JPanel();
+        container.setLayout(new FlowLayout());
 
+        JLabel jl = new JLabel("Entrer votre chemin projet :");
 
+        JTextField jf = new JTextField();
+        jf.setPreferredSize(new Dimension(400, 20));
 
-public class applcationUml extends JFrame{
-public applcationUml (String projectpath) throws ClassNotFoundException {
-	super("app uml");
-/*	this.setSize(1200, 800);
-	
-	 JPanel container = new JPanel();
-	 container.setLayout(new FlowLayout());
-	 JLabel jl=new  JLabel("Entrer votre chemin projet :");
-	
-	 JTextField jf=new JTextField();
-	jf.setPreferredSize(new Dimension(400,20));
-	/* JTextField jf1=new JTextField();
-	jf1.setPreferredSize(new Dimension(1100,700));
-	 JButton b=new JButton("generer UML");
+        JButton button = new JButton("Choisir un fichier");
+        JButton b = new JButton("Générer UML");
 
-	 container.add(jl);
-	 container.add(jf);
-	 container.add(b);*/
-	// container.add(jf1);
-	add(new dessin(projectpath),BorderLayout.CENTER);
-	//setContentPane( container);
-	 setSize(800, 600);
-	setDefaultCloseOperation(EXIT_ON_CLOSE);
+        // Action pour choisir un répertoire
+        button.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JFileChooser fileChooser = new JFileChooser();
+                fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+                int result = fileChooser.showOpenDialog(applcationUml.this);
 
-	setLocationRelativeTo(null);
-	setVisible(true);
-}
+                if (result == JFileChooser.APPROVE_OPTION) {
+                    File selectedFile = fileChooser.getSelectedFile();
+                    jf.setText(selectedFile.getAbsolutePath());
+                }
+            }
+        });
 
-public static void main(String[] args) throws ClassNotFoundException {
-	new applcationUml ("C:\\Users\\houss\\eclipse-workspace\\p02_generics");
-}
+        // Action pour générer UML
+        b.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String projectPath = jf.getText(); // Récupérer le chemin du champ de texte
 
+                if (projectPath != null && !projectPath.isEmpty()) {
+                    // Ajouter le composant UML (dessin)
+                    JPanel umlPanel = new dessin(projectPath);
+                    container.add(umlPanel, BorderLayout.CENTER);
+
+                    // Rafraîchir l'interface
+                    container.revalidate();
+                    container.repaint();
+                }
+            }
+        });
+
+        container.add(jl);
+        container.add(jf);
+        container.add(button);
+        container.add(b);
+
+        setContentPane(container);
+
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
+        setVisible(true);
+    }
+
+    public static void main(String[] args) throws ClassNotFoundException {
+        new applcationUml();
+    }
 }

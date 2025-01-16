@@ -14,7 +14,7 @@ public class Classe {
     private List<java.lang.reflect.Method> methods = new ArrayList<>();
     private List<Field> relationsAggregation = new ArrayList<>(); // Agrégation
     private List<java.lang.reflect.Field> fields = new ArrayList<>();
-    private Class<?> relationsHeritage; // Héritage
+    private Class relationsHeritage; // Héritage
 
     public Classe() {
     }
@@ -100,13 +100,17 @@ public class Classe {
       //  Class<?> cz = Class.forName( packageName+"."+f.getName().replace(".java", ""));
     	
     	Class<?> superClass = cz.getSuperclass();
-    	this.relationsHeritage= superClass;
+    	if ( ! superClass.getName().equals( "java.lang.Object")  ) {
+    		clazz.setRelationsHeritage(superClass);
+    	}
+    
+    	//this.relationsHeritage= superClass;
     	
     	java.lang.reflect.Method[] m=cz.getDeclaredMethods();
     	java.lang.reflect.Field[] fi=cz.getDeclaredFields();
     	  for (Field field : fi) {
     		//   System.out.println(field.getName());
-              if (field.getType().isPrimitive()) {
+              if (!field.getType().isPrimitive() && !(field.getType() ==String.class ) ) {
             	  relationsAggregation.add(field);
             	  clazz.setRelationsAggregation(relationsAggregation);
               }
