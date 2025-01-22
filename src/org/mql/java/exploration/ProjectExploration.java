@@ -33,6 +33,12 @@ public ProjectExploration() throws ClassNotFoundException, MalformedURLException
 		File srcDir = new File(projectpath, "\\bin");
 		System.out.println(srcDir.getAbsolutePath());
 		Projet p=new Projet();
+		 File file = new File(projectpath);
+		   // Récupérer le nom du fichier avec extension
+   
+
+       
+		p.setName(   file.getName() );
 		if (!srcDir.exists() || !srcDir.isDirectory()) {
 		    System.out.println("Le chemin spécifié n'existe pas ou n'est pas un répertoire valide.");
 		    return null; // ou lancer une exception

@@ -131,4 +131,47 @@ public class Classe {
         return clazz;
         
     }
+
+    public void display() {
+        // Afficher le nom de la classe
+        System.out.println("Classe: " + getName());
+
+        // Afficher les informations sur l'héritage
+        if (relationsHeritage != null) {
+            System.out.println("Héritage: " + relationsHeritage.getName());
+        } else {
+            System.out.println("Aucun héritage");
+        }
+
+        // Afficher les relations d'agrégation
+        if (!relationsAggregation.isEmpty()) {
+            System.out.println("Relations d'agrégation:");
+            for (Field field : relationsAggregation) {
+                System.out.println("  - " + field.getName());
+            }
+        } else {
+            System.out.println("Pas de relations d'agrégation.");
+        }
+
+        // Afficher les champs de la classe
+        if (!fields.isEmpty()) {
+            System.out.println("Champs de la classe:");
+            for (java.lang.reflect.Field field : fields) {
+                System.out.println("  - " + field.getName() + " : " + field.getType().getName());
+            }
+        } else {
+            System.out.println("Pas de champs définis.");
+        }
+
+        // Afficher les méthodes de la classe
+        if (!methods.isEmpty()) {
+            System.out.println("Méthodes de la classe:");
+            for (java.lang.reflect.Method method : methods) {
+                System.out.println("  - " + method.getName() + " : " + method.getReturnType().getName());
+            }
+        } else {
+            System.out.println("Pas de méthodes définies.");
+        }
+    }
+
 }
