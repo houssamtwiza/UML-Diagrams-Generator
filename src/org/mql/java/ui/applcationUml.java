@@ -17,6 +17,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
 import org.mql.java.exploration.ProjectExploration;
@@ -40,10 +41,11 @@ public class applcationUml extends JFrame {
         jf.setPreferredSize(new Dimension(400, 20));
 
         JButton button = new JButton("Choisir un fichier");
-        JButton b = new JButton("Générer UML");
+        JButton b = new JButton("Générer diagramme de classe");
         JButton b1 = new JButton("Générer XML");
         JButton b2 = new JButton("Générer XMI");
         JButton b3 = new JButton("parse et afficher sur console");
+        JButton b4 = new JButton("generer diagramme de package");
 
         // Action pour choisir un répertoire
         button.addActionListener(new ActionListener() {
@@ -300,6 +302,45 @@ public class applcationUml extends JFrame {
                 
                 
             }});
+     /*   b4.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String projectPath = jf.getText();
+                try {
+					Projet p= ProjectExploration.getPackageList(projectPath);
+				container.add(new dessinpaquetage ("C:\\Users\\houss\\eclipse-workspace\\UML-Diagrams-Generator\\packageDiagram.png"));
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+            
+            }});*/
+                
+        b4.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String projectPath = jf.getText();
+                try {
+                    Projet p = ProjectExploration.getPackageList(projectPath);
+
+                    // Charger l'image générée
+                    dessinpaquetage umlPanel = new dessinpaquetage("C:\\Users\\houss\\eclipse-workspace\\UML-Diagrams-Generator\\packageDiagram.png");
+                    
+                    // Ajouter un JScrollPane pour permettre le défilement
+                    JScrollPane scrollPane = new JScrollPane(umlPanel);
+                    scrollPane.setPreferredSize(new Dimension(1000, 800)); // Taille par défaut
+
+                    // Ajouter au conteneur principal
+                    container.add(scrollPane, BorderLayout.CENTER);
+
+                    container.revalidate();
+                    container.repaint();
+                } catch (Exception e1) {
+                    e1.printStackTrace();
+                }
+            }
+        });
+
                 
         container.add(jl);
         container.add(jf);
@@ -308,6 +349,7 @@ public class applcationUml extends JFrame {
         container.add(b1);
         container.add(b2);
         container.add(b3);
+        container.add(b4);
 
 
         setContentPane(container);

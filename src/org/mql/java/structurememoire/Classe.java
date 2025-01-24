@@ -7,6 +7,7 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
 public class Classe {
@@ -15,6 +16,7 @@ public class Classe {
     private List<Field> relationsAggregation = new ArrayList<>(); // Agrégation
     private List<java.lang.reflect.Field> fields = new ArrayList<>();
     private Class relationsHeritage; // Héritage
+    List<Package> packsimport =new ArrayList<Package>();
 
     public Classe() {
     }
@@ -61,7 +63,7 @@ public class Classe {
     }
 
     // Méthode d'exploration d'une classe
-    public  Classe exploreClasses(File f, String packageName) throws ClassNotFoundException, MalformedURLException {
+    public  Classe exploreClasses(File f, String packageName,String s) throws ClassNotFoundException, MalformedURLException {
         if (f == null || !f.isFile() || !f.getName().endsWith(".class")) {
             return null;
         }
@@ -81,16 +83,20 @@ public class Classe {
         System.out.println("Full class name: " + relativePath);*/
 
         // Charger la classe
-        
-       File otherProjectDir = new File("C:\\Users\\houss\\eclipse-workspace\\p02_generics/bin");  // Remplacez par le chemin correct
+       
+    File otherProjectDir = new File(s);  // Remplacez par le chemin correct
         
         // Créer une URL à partir du chemin du dossier
-        URL[] classPath = { otherProjectDir.toURI().toURL() };
+       URL[] classPath = { otherProjectDir.toURI().toURL() };
+       
         
         // Créer un chargeur de classes avec cette URL
         URLClassLoader classLoader = new URLClassLoader(classPath);
         
         // Nom qualifié de la classe à charger (avec le package complet)
+      //  String className = packageName+  "."+f.getName();
+      
+        
         String className = packageName+  "."+clazz.getName();  // Remplacez par la classe exacte
 
         // Charger la classe à partir de son nom
@@ -173,5 +179,10 @@ public class Classe {
             System.out.println("Pas de méthodes définies.");
         }
     }
+
+	public List<Package> getpacksimport() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 }

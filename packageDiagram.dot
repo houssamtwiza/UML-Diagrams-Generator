@@ -1,0 +1,5 @@
+digraph PackageDiagram {
+    rankdir=LR;
+    node [shape=box];
+    "p02_generics" -> "org.mql.packageteste";
+}

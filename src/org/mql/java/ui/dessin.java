@@ -1,6 +1,7 @@
 package org.mql.java.ui;
 
 import java.awt.*;
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
@@ -65,7 +66,7 @@ public class dessin extends JPanel {
                 }
             }
 
-        } catch (ClassNotFoundException | MalformedURLException e) {
+        } catch (ClassNotFoundException | IOException e) {
             e.printStackTrace();
         }
     }
