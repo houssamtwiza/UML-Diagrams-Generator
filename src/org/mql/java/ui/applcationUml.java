@@ -63,7 +63,7 @@ public class applcationUml extends JFrame {
         });
 
         // Action pour générer UML
-        b.addActionListener(new ActionListener() {
+  /*      b.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String projectPath = jf.getText(); // Récupérer le chemin du champ de texte
@@ -78,7 +78,39 @@ public class applcationUml extends JFrame {
                     container.repaint();
                 }
             }
+        });*/
+        b.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String projectPath = jf.getText(); // Récupérer le chemin du champ de texte
+
+                if (projectPath != null && !projectPath.isEmpty()) {
+                    // Afficher dans la console le chemin saisi
+                    System.out.println("Chemin du projet sélectionné : " + projectPath);
+
+                    // Supprimer les anciens diagrammes
+                    for (java.awt.Component comp : container.getComponents()) {
+                        if (comp instanceof dessin) {
+                            container.remove(comp);
+                        }
+                    }
+
+                    // Créer et ajouter le nouveau diagramme
+                    JPanel umlPanel = new dessin(projectPath);
+                    container.add(umlPanel, BorderLayout.CENTER);
+
+                    // Rafraîchir l'interface
+                    container.revalidate();
+                    container.repaint();
+                } else {
+                    System.out.println("Chemin invalide ou vide.");
+                }
+            }
         });
+
+        
+        
+        
         /*b1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -329,7 +361,12 @@ public class applcationUml extends JFrame {
                     // Ajouter un JScrollPane pour permettre le défilement
                     JScrollPane scrollPane = new JScrollPane(umlPanel);
                     scrollPane.setPreferredSize(new Dimension(1000, 800)); // Taille par défaut
-
+                    for (java.awt.Component comp : container.getComponents()) {
+                        if (comp instanceof dessin) {
+                            container.remove(comp);
+                        }
+                    }
+                    
                     // Ajouter au conteneur principal
                     container.add(scrollPane, BorderLayout.CENTER);
 

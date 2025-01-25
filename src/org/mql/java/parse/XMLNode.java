@@ -1,5 +1,6 @@
 package org.mql.java.parse;
 
+import java.io.File;
 import java.util.List;
 import java.util.Vector;
 
@@ -19,65 +20,81 @@ public class XMLNode {
 			super();
 			this.node = node;
 		}
-	    
-		
 		public XMLNode(String source) {
-			//une classe abstraite, on peut l'instancier par la methode suivante
-					DocumentBuilderFactory factory= DocumentBuilderFactory.newDefaultNSInstance();
-					//creer un document builder, builder permet de creer fichier xml et le remplir
-					//methode de fabrication d'un objet pour creer un objet d'autres types, bin de fabrication 
-			try {
-				DocumentBuilder builder = factory.newDocumentBuilder();
-				Document document= builder.parse(source);
-				//la racine
-				node= document.getFirstChild();
-				//dansla racine il y a  un elementnode
-				while(node.getNodeType() != Node.ELEMENT_NODE) {
-					node = node.getNextSibling(); //recuperer le frere de droit(suivant)
-				}
+		    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+		    try {
+		        File xmlFile = new File(source);
+		        if (!xmlFile.exists()) {
+		            throw new IllegalArgumentException("Le fichier spécifié n'existe pas : " + source);
+		        }
+		        
+		        DocumentBuilder builder = factory.newDocumentBuilder();
+		        Document document = builder.parse(xmlFile);
+
+		        // Récupération de la racine
+		        node = document.getFirstChild();
+		        while (node != null && node.getNodeType() != Node.ELEMENT_NODE) {
+		            node = node.getNextSibling();
+		        }
 
 		        if (node == null) {
 		            throw new IllegalArgumentException("Aucun nœud élément trouvé dans le fichier XML.");
 		        }
-				
-//				System.out.println(Node.ELEMENT_NODE);
-//				System.out.println(Node.COMMENT_NODE);
-			} catch (Exception e) {
-				System.out.println("Erreur:"+ e.getMessage());
-			}
+		    } catch (Exception e) {
+		        System.err.println("Erreur de parsing XML : " + e.getMessage());
+		        e.printStackTrace();
+		    }
 		}
-		//ue liste de child qu'on va convertir en tableaux
-		public XMLNode[] children() {
-			List<XMLNode> list= new Vector<XMLNode>();
-			NodeList nl = node.getChildNodes();
-			int n = nl.getLength();
-			for(int i=0; i<n; i++) {
-				Node child= nl.item(i);
-				if(child.getNodeType() == Node.ELEMENT_NODE) {
-					list.add(new XMLNode(child));
-				}
-			}
-			//convertir la liste en tableau
-			XMLNode t[] = new XMLNode[list.size()];
-			list.toArray(t);
-			return t;
-				
-		}
-		
-		public XMLNode child(String name) {
-			List<XMLNode> list= new Vector<XMLNode>();
-			NodeList nl = node.getChildNodes();
-			int n = nl.getLength();
-			for(int i=0; i<n; i++) {
-				Node child= nl.item(i);
-				if(child.getNodeName().equals(name)) {
-					return new XMLNode(child);
-				}
-			}
 
-			return null;
-				
+//ue liste de child qu'on va convertir en tableaux
+		// Retourne tous les enfants de type élément de ce nœud sous forme d'un tableau XMLNode
+		public XMLNode[] children() {
+		    // Vérification si le nœud courant est nul
+		    if (node == null) {
+		        return new XMLNode[0]; // Retourne un tableau vide
+		    }
+
+		    // Liste pour stocker les enfants de type élément
+		    List<XMLNode> childrenList = new Vector<>();
+		    NodeList childNodes = node.getChildNodes();
+		    int numberOfChildren = childNodes.getLength();
+
+		    // Parcours de tous les enfants
+		    for (int i = 0; i < numberOfChildren; i++) {
+		        Node child = childNodes.item(i);
+		        // On ne conserve que les nœuds de type élément
+		        if (child.getNodeType() == Node.ELEMENT_NODE) {
+		            childrenList.add(new XMLNode(child));
+		        }
+		    }
+
+		    // Conversion de la liste en tableau
+		    return childrenList.toArray(new XMLNode[0]);
 		}
+
+		// Retourne un enfant spécifique basé sur son nom
+		public XMLNode child(String name) {
+		    // Vérification si le nœud courant est nul
+		    if (node == null || name == null || name.isEmpty()) {
+		        return null;
+		    }
+
+		    NodeList childNodes = node.getChildNodes();
+		    int numberOfChildren = childNodes.getLength();
+
+		    // Parcours de tous les enfants
+		    for (int i = 0; i < numberOfChildren; i++) {
+		        Node child = childNodes.item(i);
+		        // Vérifie si le nom correspond et que c'est un nœud élément
+		        if (child.getNodeType() == Node.ELEMENT_NODE && name.equals(child.getNodeName())) {
+		            return new XMLNode(child);
+		        }
+		    }
+
+		    // Retourne null si aucun nœud correspondant n'est trouvé
+		    return null;
+		}
+
 		
 		//recuprer le nom de noeud
 		public String getName() {
@@ -94,13 +111,15 @@ public class XMLNode {
 			return null;
 		}
 		
-		
 		public String attribute(String name) {
-			NamedNodeMap atts = node.getAttributes();
-					return atts.getNamedItem(name) !=null? atts.getNamedItem(name).getNodeValue() : null;
-					//remplacer le null contenir ou pas l'information, desoudre les problemes de null Option
-					
+		    if (node == null || node.getAttributes() == null) {
+		        return null;
+		    }
+		    NamedNodeMap atts = node.getAttributes();
+		    Node attNode = atts.getNamedItem(name);
+		    return attNode != null ? attNode.getNodeValue() : null;
 		}
+
 		
 		public int intAttribute(String name) {
 			String att = attribute(name);

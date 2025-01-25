@@ -22,9 +22,20 @@ public class Package {
 	public void setClasses(List<Classe> classes) {
 		this.classes = classes;
 	}
-	public  Package explorePackages(File f,String s) throws ClassNotFoundException, MalformedURLException {
+	public  Package explorePackages(File f,String basePath) throws ClassNotFoundException, MalformedURLException {
 		Package p=new Package();
-		p.name=f.getName();
+		// Obtenir le chemin relatif par rapport à la racine du projet
+	    String relativePath = f.getAbsolutePath().replace(basePath, "").replace(File.separator, ".");
+	    
+	    // Retirer le premier point si présent
+	    if (relativePath.startsWith(".")) {
+	        relativePath = relativePath.substring(1);
+	    }
+	    
+	    // Définir le nom complet du package
+	    p.name = relativePath;
+
+	//	p.name=f.getName();
 		File ff[] = f.listFiles();
 		
 		for (File fg:ff) {
@@ -32,7 +43,7 @@ public class Package {
 				
 			//if (fg.isFile() && fg.getName().endsWith(".java")) {	
 			Classe c=new Classe();
-			Classe c1=		c.exploreClasses(fg,p.name,s);
+			Classe c1=		c.exploreClasses(fg,p.name,basePath);
 		//	relationsimport.addAll(c1.getpacksimport());
 			//setRelationsimport	(relationsimport);
 			p.classes.add(c1);
